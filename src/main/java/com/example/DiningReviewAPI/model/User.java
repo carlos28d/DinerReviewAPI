@@ -9,6 +9,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "app_user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,6 +19,10 @@ public class User {
     @NotNull
     @Column(unique = true, updatable = false, nullable = false)
     String name;
+    @Column(nullable = false)
+    private String password;
+    @Enumerated(EnumType.STRING)
+    private Role role;
     @Setter
     String city;
     @Setter
@@ -30,4 +35,19 @@ public class User {
     Boolean interestedEgg;
     @Setter
     Boolean interestedDairy;
+
+    public void changePassword(String encodedPassword) {
+        this.password = encodedPassword;
+    }
+
+    public void assignRole(Role role) {
+        this.role = role;
+    }
+
+    public User(String name, String encodedPassword, Role role) {
+        this.name = name;
+        this.password = encodedPassword;
+        this.role = role;
+    }
+
 }

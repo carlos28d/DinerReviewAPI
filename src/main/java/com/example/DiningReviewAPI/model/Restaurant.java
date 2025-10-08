@@ -18,7 +18,6 @@ public class Restaurant {
     @Setter
     private String name;
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "restaurant_id")
     private List<DiningReview> reviews;
     @Setter
     private String zipCode;
