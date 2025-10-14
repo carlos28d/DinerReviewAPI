@@ -11,26 +11,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
     private final UserService userService;
-
-    @PostMapping("/register")
-    public ResponseEntity<User> createUser(@RequestBody UserRegistrationDTO newUserDTO) {
-        User savedUser = userService.registerUser(newUserDTO);
-        UserResponseDTO response = new UserResponseDTO(
-                savedUser.getId(),
-                savedUser.getName(),
-                savedUser.getRole().name()
-        );
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
-    }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserUpdateResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserUpdateDTO userUpdatesDTO, @AuthenticationPrincipal CustomUserDetails currentUser) {
