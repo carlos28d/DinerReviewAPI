@@ -1,0 +1,5 @@
+# Created at 2025-10-13T20:32:26.997
+Boot Manifest-JAR contains absolute paths in classpath 'D:\Codecademy\spring_boot\DiningReviewAPI\DiningReviewAPI\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+
