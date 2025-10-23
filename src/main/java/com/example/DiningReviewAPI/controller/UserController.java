@@ -1,9 +1,6 @@
 package com.example.DiningReviewAPI.controller;
 
-import com.example.DiningReviewAPI.dto.UserRegistrationDTO;
-import com.example.DiningReviewAPI.dto.UserResponseDTO;
-import com.example.DiningReviewAPI.dto.UserUpdateDTO;
-import com.example.DiningReviewAPI.dto.UserUpdateResponseDTO;
+import com.example.DiningReviewAPI.dto.*;
 import com.example.DiningReviewAPI.security.CustomUserDetails;
 import com.example.DiningReviewAPI.service.UserService;
 import com.example.DiningReviewAPI.model.User;
@@ -24,12 +21,23 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
-
+    @GetMapping("/{name}")
+    public ResponseEntity<UserDisplayDTO> displayUser(@PathVariable String name) {
+        User displayUser = userService.displayUser(name);
+        UserDisplayDTO response = new UserDisplayDTO(
+                displayUser.getName(),
+                displayUser.getCity(),
+                displayUser.getState(),
+                displayUser.getZipCode(),
+                displayUser.getInterestedPeanut(),
+                displayUser.getInterestedEgg(),
+                displayUser.getInterestedDairy()
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+    @PreAuthorize("#id == authentication.principal.id")
     @PutMapping("/{id}")
-    public ResponseEntity<UserUpdateResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserUpdateDTO userUpdatesDTO, @AuthenticationPrincipal CustomUserDetails currentUser) {
-        if (!currentUser.getId().equals(id)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot update another user");
-        }
+    public ResponseEntity<UserUpdateResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserUpdateDTO userUpdatesDTO) {
         User updatedUser = userService.updateUser(id, userUpdatesDTO);
         UserUpdateResponseDTO response = new UserUpdateResponseDTO(
                 updatedUser.getId(),
@@ -42,21 +50,5 @@ public class UserController {
                 updatedUser.getInterestedDairy()
         );
         return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-    @GetMapping("/welcome")
-    public String welcome() {
-        return "Welcome, this endpoint is not secure";
-    }
-
-    @GetMapping("/user/userProfile")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public String userProfile() {
-        return "Welcome to User Profile";
-    }
-
-    @GetMapping("/admin/adminProfile")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String adminProfile() {
-        return "Welcome to Admin Profile";
     }
 }

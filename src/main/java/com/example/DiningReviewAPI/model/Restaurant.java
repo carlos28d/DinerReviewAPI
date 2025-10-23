@@ -22,4 +22,8 @@ public class Restaurant {
     @Setter
     private String zipCode;
 
+    public Restaurant(String name, String zipCode) {
+        this.name = name;
+        this.zipCode = zipCode;
+    }
 }

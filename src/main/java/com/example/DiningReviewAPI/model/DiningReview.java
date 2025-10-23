@@ -38,7 +38,14 @@ public class DiningReview {
     @Setter
     private ReviewStatus status = ReviewStatus.PENDING;
 
-
+public DiningReview(User user, Restaurant restaurant, Integer peanutScore, Integer eggScore, Integer dairyScore, String comment) {
+    this.user = user;
+    this.restaurant = restaurant;
+    this.peanutScore = peanutScore;
+    this.eggScore = eggScore;
+    this.dairyScore = dairyScore;
+    this.comment = comment;
+}
 
 
 
